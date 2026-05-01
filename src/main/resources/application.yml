@@ -1,0 +1,29 @@
+# the Spring Boot configuration file
+# tells Spring Boot how to connect to the database, how JPA should behave, which port it should run on
+spring:
+  datasource:
+    url: jdbc:postgresql://10.220.129.238:5438/postgres
+    username: postgres
+    password: Passw0rd
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # 可选: update / validate / create / create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: contact_book
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+mybatis:
+  type-aliases-package: org.example.model
+  mapper-locations: classpath:mapper/PersonMapper.xml
+
+server:
+  port: 8082

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- tells MyBatis how to map DB columns -->
+<!-- defines all SQL statements for one mapper interface -->
+<mapper namespace="org.example.mapper.PersonMapper">
+    <!-- the identifier you'll reference later,
+    ** note this can be ignored if all java col names and DB name all match the DB
+    ** in that case^^ you would use resultType = "org.example.model.Person" no need for the below large section of code
+    -->
+    <resultMap id="person" type="org.example.model.Person">
+        <!-- id: maps primary key columns to the Java property-->
+        <!-- property: field name in Java; column: column name in SQL result-->
+        <id property="name" column="name"/>
+        <!-- result: maps non-primary key columns to the Java property-->
+        <result property="phone" column="phone"/>
+        <result property="country" column="country"/>
+        <result property="gender" column="gender"/>
+    </resultMap>
+
+    <!-- Defines a reusable SQL snippet????? -->
+    <sql id="Base_Cols"> name, phone, country, gender </sql>
+
+    <select id="readAll" resultMap="person">
+        SELECT name, phone, country, gender FROM contact_book.person;
+    </select>
+
+    <select id="readByName" resultMap="person" parameterType="String">
+        SELECT name, phone, country, gender FROM contact_book.person WHERE name = #{name};
+    </select>
+
+    <insert id="create" parameterType="person">
+        INSERT INTO contact_book.person(name, phone, country, gender) VALUES (#{name}, #{phone}, #{country}, #{gender});
+    </insert>
+
+    <update id="updateAll" parameterType="person">
+        UPDATE contact_book.person SET
+            phone = #{phone},
+            country = #{country},
+            gender = #{gender}
+        WHERE name = #{name};
+    </update>
+
+    <update id="updatePhone" parameterType="String">
+        UPDATE contact_book.person SET phone = #{phone} WHERE name = #{name};
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM contact_book.person WHERE name = #{name}
+    </delete>
+
+</mapper>
